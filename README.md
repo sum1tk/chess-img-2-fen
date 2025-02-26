@@ -147,9 +147,9 @@ The `image2fen.py` script allows you to process a chessboard image from the comm
     
     "fen": "8/8/8/8/8/8/8/8 w - - 0 1",
     
-    "svg\_url": "/static/chess\_board.svg",
+    "svg_url": "/static/chess_board.svg",
     
-    "output\_image": "/output.jpg"
+    "output_image": "/output.jpg"
     
     }
   ```
