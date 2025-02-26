@@ -70,7 +70,6 @@ The training process was conducted on Kaggle. You can view the training notebook
 
     ```bash
     pip install -r requirements.txt
-    Download the custom YOLOv8 model (yolov8_custom.pt) and place it in the root directory.
     ````
 4. Run the Flask application:
 
@@ -125,23 +124,12 @@ The `image2fen.py` script allows you to process a chessboard image from the comm
 1. **FEN Notation**:
    1. The script will print the FEN notation of the detected chessboard.
 1. **SVG File**:
-   1. The script will save the chessboard visualization as chess\_board.svg in the current directory.
+   1. The script will save the chessboard visualization.
 1. **Lichess Link**:
    1. The script will print a link to analyze the position on Lichess.
 
-**Example Output**
-
-  ```plaintext
-  
-  
-  FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  
-  SVG saved as: chess\_board.svg
-  
-  Analyze on Lichess: https://lichess.org/editor/rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR\_w\_KQkq\_-\_0\_1
-  ```
 -----
-**API Endpoints**
+## API Endpoints
 
 **POST /process**
 
@@ -157,11 +145,11 @@ The `image2fen.py` script allows you to process a chessboard image from the comm
     
     {
     
-    `  `"fen": "8/8/8/8/8/8/8/8 w - - 0 1",
+    "fen": "8/8/8/8/8/8/8/8 w - - 0 1",
     
-    `  `"svg\_url": "/static/chess\_board.svg",
+    "svg\_url": "/static/chess\_board.svg",
     
-    `  `"output\_image": "/output.jpg"
+    "output\_image": "/output.jpg"
     
     }
   ```
@@ -172,7 +160,7 @@ The `image2fen.py` script allows you to process a chessboard image from the comm
   - fen: FEN notation (default: 8/8/8/8/8/8/8/8 w - - 0 1).
 - **Response**: SVG image.
 -----
-**Technologies Used**
+## Technologies Used
 
 - **Python**: Core programming language.
 - **Flask**: Web framework for the backend.
@@ -181,7 +169,7 @@ The `image2fen.py` script allows you to process a chessboard image from the comm
 - **Chess Library**: FEN generation and SVG rendering.
 - **HTML/CSS/JavaScript**: Frontend interface.
 -----
-**Contributing**
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -191,12 +179,12 @@ Contributions are welcome! Please follow these steps:
 1. Push to the branch (git push origin feature/YourFeature).
 1. Open a pull request.
 -----
-**License**
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://license/) file for details.
 
 -----
-**Acknowledgments**
+## Acknowledgments
 
 - [Ultralytics](https://ultralytics.com/) for YOLOv8.
 - [Lichess](https://lichess.org/) for providing an analysis platform.
