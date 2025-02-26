@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard Detection</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e2f; /* Dark background */
+            color: #e0e0e0; /* Light text */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #2a2a40; /* Dark container background */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ffffff; /* White heading */
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            margin-bottom: 2rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed #4a90e2; /* Blue dashed border */
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .drop-zone.dragover {
+            background: rgba(74, 144, 226, 0.1); /* Light blue background on drag */
+            border-color: #63a4ff; /* Brighter blue border */
+        }
+
+        .drop-zone p {
+            margin: 0;
+            font-size: 1rem;
+            color: #4a90e2; /* Blue text */
+        }
+
+        .drop-zone input {
+            display: none;
+        }
+
+        /* Form Styles */
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: #b0b0b0; /* Light gray text */
+            margin-bottom: 0.5rem;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease, background 0.3s ease;
+            background: #3a3a5a; /* Dark input background */
+            color: #e0e0e0; /* Light text */
+        }
+
+        select:focus, button:focus {
+            border-color: #003d83; /* Blue border on focus */
+            outline: none;
+        }
+
+        button {
+            background: #4d6bfe; /* Blue button */
+            color: #ffffff; /* White text */
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #63a4ff; /* Brighter blue on hover */
+        }
+
+        /* Output Section */
+        .output-section {
+            margin-top: 2rem;
+        }
+
+        .output-section h2 {
+            font-size: 1.5rem;
+            color: #ffffff; /* White heading */
+            margin-bottom: 1rem;
+        }
+
+        .output-section p {
+            font-size: 1rem;
+            color: #b0b0b0; /* Light gray text */
+            margin-bottom: 1rem;
+        }
+
+        .output-section img, .output-section iframe {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        /* FEN Edit Section */
+        #fenEditSection {
+            margin-top: 1.5rem;
+        }
+
+        #fenEditSection h3 {
+            font-size: 1.25rem;
+            color: #ffffff; /* White heading */
+            margin-bottom: 0.75rem;
+        }
+
+        #fenInput {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+            background: #3a3a5a; /* Dark input background */
+            color: #e0e0e0; /* Light text */
+        }
+
+        #fenInput:focus {
+            border-color: #4a90e2; /* Blue border on focus */
+            outline: none;
+        }
+
+        /* Lichess Link */
+        #lichessLink {
+            margin-top: 1.5rem;
+        }
+
+        #lichessLink h3 {
+            font-size: 1.25rem;
+            color: #ffffff; /* White heading */
+            margin-bottom: 0.75rem;
+        }
+
+        #lichessUrl {
+            color: #4a90e2; /* Blue link */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #lichessUrl:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Messages */
+        .error {
+            color: #ff6b6b; /* Red error text */
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chessboard Detection</h1>
+        <div class="upload-section">
+            <form id="uploadForm">
+                <div class="drop-zone" id="dropZone">
+                    <p>Drag and drop an image here or click to upload.</p>
+                    <input type="file" id="file" name="file" accept="image/*" required hidden>
+                </div>
+                <br>
+                <label for="perspective">Perspective:</label>
+                <select id="perspective" name="perspective">
+                    <option value="white">White</option>
+                    <option value="black">Black</option>
+                </select>
+                <br><br>
+                <button type="submit">Process Image</button>
+            </form>
+        </div>
+        <div class="output-section">
+            <h2>Results</h2>
+            <div id="results">
+                <!-- Results will be displayed here -->
+            </div>
+            <div id="fenEditSection" style="display: none;">
+                <h3>Edit FEN</h3>
+                <textarea id="fenInput" rows="2" cols="50"></textarea>
+                <button onclick="updateBoard()">Update Board</button>
+            </div>
+            <div id="lichessLink" style="display: none;">
+                <h3>Analyze on Lichess</h3>
+                <a id="lichessUrl" target="_blank">Open in Lichess</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('file');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if (fileInput.files.length) {
+                dropZone.textContent = fileInput.files[0].name;
+            }
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                dropZone.textContent = e.dataTransfer.files[0].name;
+            }
+        });
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('perspective', document.getElementById('perspective').value);
+
+            const response = await fetch('/process', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('results').innerHTML = `
+                    <p><strong>FEN:</strong> ${data.fen}</p>
+                    <p><strong>Chessboard:</strong></p>
+                    <img src="${data.output_image}" alt="Detected Chessboard">
+                    <p><strong>SVG:</strong></p>
+                    <iframe src="${data.svg_url}" width="500" height="500"></iframe>
+                `;
+                document.getElementById('fenEditSection').style.display = 'block';
+                document.getElementById('fenInput').value = data.fen;
+                document.getElementById('lichessLink').style.display = 'block';
+                document.getElementById('lichessUrl').href = `https://lichess.org/editor/${data.fen}`;
+            } else {
+                document.getElementById('results').innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                document.getElementById('fenEditSection').style.display = 'none';
+                document.getElementById('lichessLink').style.display = 'none';
+            }
+        });
+
+        // Update board with edited FEN
+        function updateBoard() {
+            const fen = document.getElementById('fenInput').value;
+            const svgUrl = `/static/chess_board.svg?fen=${encodeURIComponent(fen)}`;
+            document.getElementById('results').innerHTML = `
+                <p><strong>FEN:</strong> ${fen}</p>
+                <p><strong>Chessboard:</strong></p>
+                <iframe src="${svgUrl}" width="500" height="500"></iframe>
+            `;
+            document.getElementById('lichessUrl').href = `https://lichess.org/editor/${fen}`;
+        }
+    </script>
+</body>
+</html>
