@@ -56,7 +56,7 @@ The training process was conducted on Kaggle. You can view the training notebook
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/chessboard-detection.git
+   git clone https://github.com/sum1tk/chess-img-2-fen.git
    ```
 2. Create a virtual environment:
 
